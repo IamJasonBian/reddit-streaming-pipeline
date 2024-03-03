@@ -23,6 +23,27 @@ WITH CLUSTERING ORDER BY (api_timestamp DESC);
 
 CREATE INDEX IF NOT EXISTS ON comments (uuid);
 
+CREATE TABLE IF NOT EXISTS comments_historical(
+    uuid uuid,
+    id text,
+    name text,
+    author text,
+    body text,
+    subreddit text,
+    upvotes int,
+    downvotes int,
+    over_18 boolean,
+    permalink text,
+    api_timestamp timestamp,
+    ingest_timestamp timestamp,
+    sentiment_score float,
+    PRIMARY KEY((subreddit), api_timestamp),
+    snapshot_date timestamp
+)
+WITH CLUSTERING ORDER BY (api_timestamp DESC);
+
+CREATE INDEX IF NOT EXISTS ON comments_historical (uuid);
+
 CREATE TABLE IF NOT EXISTS subreddit_sentiment_avg(
     uuid uuid,
     subreddit text,
@@ -32,3 +53,4 @@ CREATE TABLE IF NOT EXISTS subreddit_sentiment_avg(
 WITH CLUSTERING ORDER BY (ingest_timestamp DESC);
 
 CREATE INDEX IF NOT EXISTS ON subreddit_sentiment_avg (uuid);
+
